@@ -32,4 +32,4 @@ jobs:
         with:  
           context: .  
           push: true  
-          tags: ghcr.io/hanzshaoui/duanju:latest  
+          tags: ghcr.io/hanshaoui/duanju:latest  
