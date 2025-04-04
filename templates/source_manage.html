@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>源管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header {
+            background-color: #6366f1;
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+        .source-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            background-color: white;
+        }
+        .source-header {
+            padding: 1rem;
+            background-color: #f1f5f9;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .source-body {
+            padding: 1rem;
+        }
+        .source-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+        }
+        .source-item:last-child {
+            border-bottom: none;
+        }
+        .source-item:hover {
+            background-color: #f8f9fa;
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .status-up {
+            background-color: #22c55e;
+        }
+        .status-down {
+            background-color: #ef4444;
+        }
+        .status-unknown {
+            background-color: #a1a1aa;
+        }
+        .source-info {
+            flex: 1;
+        }
+        .source-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .source-url {
+            font-size: 0.85rem;
+            color: #4b5563;
+        }
+        .source-api {
+            font-size: 0.85rem;
+            color: #4b5563;
+        }
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn-circle {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .btn-circle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .add-source-card {
+            border: 2px dashed #d1d5db;
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .add-source-card:hover {
+            border-color: #6366f1;
+            background-color: #f9fafb;
+        }
+        .add-source-card i {
+            font-size: 2rem;
+            color: #6366f1;
+            margin-bottom: 1rem;
+        }
+        .add-source-card h3 {
+            color: #6366f1;
+            margin-bottom: 0.5rem;
+        }
+        .add-source-card p {
+            color: #6b7280;
+        }
+        .modal-header {
+            background-color: #6366f1;
+            color: white;
+        }
+        .modal-footer {
+            border-top: none;
+            padding-top: 0;
+        }
+        .badge-api {
+            background-color: #e9ecef;
+            color: #4b5563;
+            font-weight: normal;
+            padding: 0.35rem 0.65rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>源管理</h1>
+                <div>
+                    <a href="{{ url_for('source_status') }}" class="btn btn-outline-light me-2">
+                        <i class="fas fa-signal me-2"></i>源状态监控
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-light">
+                        <i class="fas fa-arrow-left me-2"></i>返回首页
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 成功/错误消息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- 添加新源卡片 -->
+        <div class="add-source-card" data-bs-toggle="modal" data-bs-target="#addSourceModal">
+            <i class="fas fa-plus-circle"></i>
+            <h3>添加新源</h3>
+            <p>点击此处添加新的视频源</p>
+        </div>
+
+        <!-- 源列表 -->
+        <div class="source-card">
+            <div class="source-header">
+                <span>所有源</span>
+                <span>总计: {{ sources|length }} 个源</span>
+            </div>
+            <div class="source-body">
+                {% for source in sources %}
+                <div class="source-item">
+                    <div class="source-info">
+                        <div class="source-name">
+                            {{ source.yuan_name }}
+                            <span class="badge badge-api">{{ source.yuan_api }}</span>
+                        </div>
+                        <div class="source-url">{{ source.yuan_url }}</div>
+                    </div>
+                    <div class="action-btns">
+                        <button class="btn btn-primary btn-circle" 
+                                onclick="prepareEditSource({{ loop.index0 }})"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editSourceModal">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger btn-circle" 
+                                onclick="prepareDeleteSource('{{ source.yuan_name }}')"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#deleteSourceModal">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加源模态框 -->
+    <div class="modal fade" id="addSourceModal" tabindex="-1" aria-labelledby="addSourceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSourceModalLabel">添加新源</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('add_source') }}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="yuan_name" class="form-label">源名称</label>
+                            <input type="text" class="form-control" id="yuan_name" name="yuan_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="yuan_url" class="form-label">源URL</label>
+                            <input type="url" class="form-control" id="yuan_url" name="yuan_url" required>
+                            <div class="form-text">例如: https://api.example.com</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="yuan_api" class="form-label">API路径</label>
+                            <input type="text" class="form-control" id="yuan_api" name="yuan_api" required>
+                            <div class="form-text">例如: /api.php/provide/vod/?</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="yuan_cat" class="form-label">分类参数名</label>
+                            <input type="text" class="form-control" id="yuan_cat" name="yuan_cat" required value="t">
+                        </div>
+                        <div class="mb-3">
+                            <label for="yuan_detail" class="form-label">详情参数名</label>
+                            <input type="text" class="form-control" id="yuan_detail" name="yuan_detail" required value="ac">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">添加</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑源模态框 -->
+    <div class="modal fade" id="editSourceModal" tabindex="-1" aria-labelledby="editSourceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSourceModalLabel">编辑源</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('edit_source') }}" method="POST">
+                    <input type="hidden" id="edit_index" name="index">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="edit_yuan_name" class="form-label">源名称</label>
+                            <input type="text" class="form-control" id="edit_yuan_name" name="yuan_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_yuan_url" class="form-label">源URL</label>
+                            <input type="url" class="form-control" id="edit_yuan_url" name="yuan_url" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_yuan_api" class="form-label">API路径</label>
+                            <input type="text" class="form-control" id="edit_yuan_api" name="yuan_api" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_yuan_cat" class="form-label">分类参数名</label>
+                            <input type="text" class="form-control" id="edit_yuan_cat" name="yuan_cat" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_yuan_detail" class="form-label">详情参数名</label>
+                            <input type="text" class="form-control" id="edit_yuan_detail" name="yuan_detail" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除源模态框 -->
+    <div class="modal fade" id="deleteSourceModal" tabindex="-1" aria-labelledby="deleteSourceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteSourceModalLabel">确认删除</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('delete_source') }}" method="POST">
+                    <input type="hidden" id="delete_source_name" name="source_name">
+                    <div class="modal-body">
+                        <p>确定要删除源 "<span id="source_name_display"></span>" 吗？此操作不可撤销。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-danger">删除</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 源数据，用于编辑功能
+        const sources = {{ sources|tojson }};
+        
+        // 准备编辑源
+        function prepareEditSource(index) {
+            const source = sources[index];
+            document.getElementById('edit_index').value = index;
+            document.getElementById('edit_yuan_name').value = source.yuan_name;
+            document.getElementById('edit_yuan_url').value = source.yuan_url;
+            document.getElementById('edit_yuan_api').value = source.yuan_api;
+            document.getElementById('edit_yuan_cat').value = source.yuan_cat;
+            document.getElementById('edit_yuan_detail').value = source.yuan_detail;
+        }
+        
+        // 准备删除源
+        function prepareDeleteSource(sourceName) {
+            document.getElementById('delete_source_name').value = sourceName;
+            document.getElementById('source_name_display').textContent = sourceName;
+        }
+    </script>
+</body>
+</html> 
