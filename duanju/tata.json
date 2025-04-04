@@ -1,0 +1,72 @@
+[   {
+    "yuan_name": "华为",
+    "yuan_url": "https://cjhwba.com",
+    "yuan_api": "/api.php/provide/vod/?",
+    "yuan_cat": "t",
+    "yuan_detail": "ac"
+},
+    {
+        "yuan_name": "光速",
+        "yuan_url": "https://api.guangsuapi.com",
+        "yuan_api": "/api.php/provide/vod/at/json/?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    },
+    
+    {
+        "yuan_name": "速播",
+        "yuan_url": "https://subocaiji.com",
+        "yuan_api": "/api.php/provide/vod/at/json/?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    },
+    {
+        "yuan_name": "黑木耳",
+        "yuan_url": "https://json.heimuer.xyz",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    },
+    {
+        "yuan_name": "1080源",
+        "yuan_url": "https://api.1080zyku.com",
+        "yuan_api": "/inc/apijson.php?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    },
+    {
+        "yuan_name": "ikun",
+        "yuan_url": "https://ikunzyapi.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    },
+    {
+        "yuan_name": "阿里源",
+        "yuan_url": "http://aliys.cn:90",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    },
+    {
+        "yuan_name": "360源",
+        "yuan_url": "https://360zy.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    },
+    {
+        "yuan_name": "天空资源",
+        "yuan_url": "https://api.tiankongapi.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    },
+    {
+        "yuan_name": "墨斗",
+        "yuan_url": "https://www.mdzyapi.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_cat": "t",
+        "yuan_detail": "ac"
+    }
+]

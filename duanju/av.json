@@ -1,0 +1,87 @@
+[
+    {
+        "yuan_name": "🔞老鸭资源",
+        "yuan_url": "https://api.apilyzy.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_detail": "ac",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    },
+    {
+        "yuan_name": "🔞淫水机资源",
+        "yuan_url": "https://www.xrbsp.com",
+        "yuan_api": "/inc/apijson.php?",
+        "yuan_detail": "ac",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    },{
+        "yuan_name": "🔞番号资源",
+        "yuan_url": "http://fhapi9.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_detail": "ac",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    },{
+        "yuan_name": "🔞155资源",
+        "yuan_url": "https://155api.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_detail": "detail",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    },{
+        "yuan_name": "🔞鸡坤资源",
+        "yuan_url": "https://jkunzyapi.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_detail": "ac",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    },{
+        "yuan_name": "🔞黄AV资源",
+        "yuan_url": "https://www.pgxdy.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_detail": "ac",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    },{
+        "yuan_name": "🔞乐播资源",
+        "yuan_url": "https://api.ddapi.cc",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_detail": "ac",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    },{
+        "yuan_name": "🔞滴滴资源",
+        "yuan_url": "https://api.ddapi.cc",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_detail": "ac",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    }
+    ,{
+        "yuan_name": "🔞精品资源",
+        "yuan_url": "https://www.jingpinx.com",
+        "yuan_api": "/api.php/provide/vod/?",
+        "yuan_detail": "ac",
+        "detail": "detail",
+        "yuan_cat": "t",
+        "cat":0,
+        "id": "ids"
+    }
+
+]
